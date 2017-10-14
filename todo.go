@@ -15,12 +15,16 @@ const (
 )
 
 func main() {
-	if len(os.Args) <= 1 {
-		usage()
+  app := todolist.NewApp()
+
+  input := strings.Join(os.Args[1:], " ")
+
+  if len(os.Args) <= 1 {
+		app.ListTodos(input)
 		os.Exit(0)
 	}
-	input := strings.Join(os.Args[1:], " ")
-	routeInput(os.Args[1], input)
+
+	routeInput(app, os.Args[1], input)
 }
 
 func usage() {
@@ -142,11 +146,10 @@ func usage() {
 	fmt.Println("For full documentation, please visit http://todolist.site")
 }
 
-func routeInput(command string, input string) {
-	app := todolist.NewApp()
+func routeInput(app *todolist.App, command string, input string) {
 	switch command {
-	case "l", "ln", "list", "agenda":
-		app.ListTodos(input)
+	case "h", "help", "-h", "--helo":
+		usage()
 	case "a", "add":
 		app.AddTodo(input)
 	case "done":
